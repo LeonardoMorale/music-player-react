@@ -39,8 +39,11 @@ class App extends Component {
 
   componentDidMount() {
     const { songs, toggle } = this.props;
+    console.info('App mounted. Songs loaded:', songs.length);
     if (songs[0]) {
       this.audioPlayer.src = URL.createObjectURL(songs[0]);
+    } else {
+      console.error('No songs available to load on mount');
     }
     this.releaseKeyboardEvents = keyboardEvents({
       playNext: this.playNext,
@@ -137,10 +140,13 @@ class App extends Component {
   playSong = (id) => {
     const { songs } = this.props;
     if (songs[id]) {
+      console.log('Playing song:', songs[id].name);
       const fileSrc = URL.createObjectURL(songs[id]);
       this.audioPlayer.src = fileSrc;
       this.audioPlayer.play();
       window.document.title = songs[id].name.replace('.mp3', '');
+    } else {
+      console.error('Song with id', id, 'not found');
     }
   }
 
